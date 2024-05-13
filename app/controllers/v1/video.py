@@ -166,6 +166,22 @@ def upload_bgm_file(request: Request, file: UploadFile = File(...)):
     raise HttpException('', status_code=400, message=f"{request_id}: Only *.mp3 files can be uploaded")
 
 
+# 文件资源上传
+@router.post("/files", response_model=BgmUploadResponse, summary="Upload the file to the file directory")
+def upload_file(request: Request, file: UploadFile = File(...)):
+    dir_ = utils.public_dir()
+    save_path = os.path.join(dir_, file.filename)
+    # save file
+    with open(save_path, "wb+") as buffer:
+        # If the file already exists, it will be overwritten
+        file.file.seek(0)
+        buffer.write(file.file.read())
+    response = {
+        "file": save_path
+    }
+    return utils.get_response(200, response)
+
+
 @router.get("/stream/{file_path:path}")
 async def stream_video(request: Request, file_path: str):
     tasks_dir = utils.task_dir()
