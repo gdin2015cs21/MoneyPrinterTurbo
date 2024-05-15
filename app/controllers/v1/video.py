@@ -15,10 +15,12 @@ from app.controllers.manager.redis_manager import RedisTaskManager
 from app.controllers.v1.base import new_router
 from app.models.exception import HttpException
 from app.models.schema import TaskVideoRequest, TaskQueryResponse, TaskResponse, TaskQueryRequest, \
-    BgmUploadResponse, BgmRetrieveResponse, TaskDeletionResponse
+    BgmUploadResponse, BgmRetrieveResponse, TaskDeletionResponse, SplitPptResponse, TaskParams
 from app.services import task as tm
 from app.services import state as sm
 from app.utils import utils
+from urllib.parse import parse_qs
+import uuid
 
 # 认证依赖项
 # router = new_router(dependencies=[Depends(base.verify_token)])
@@ -179,6 +181,23 @@ def upload_file(request: Request, file: UploadFile = File(...)):
     response = {
         "file": save_path
     }
+    return utils.get_response(200, response)
+
+
+# 任务添加
+@router.post("/addTask", response_model=SplitPptResponse, summary="Add Task, Contains: split_ppt, add_content_text, ")
+async def add_task(request: Request):
+    raw_data = await request.body()
+    task_id = uuid.uuid1().hex
+
+    task_manager.add_task(tm.submit_task, task_id=task_id, params=raw_data)
+
+    response = {
+                "status": 200,
+                "message": "success",
+                "data": {
+                    "task_id": task_id
+                }}
     return utils.get_response(200, response)
 
 

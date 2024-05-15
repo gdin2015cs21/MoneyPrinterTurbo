@@ -125,6 +125,11 @@ class VideoParams(BaseModel):
     paragraph_number: Optional[int] = 1
 
 
+class TaskParams(BaseModel):
+    task_type: str
+    content_id: int
+
+
 class VideoScriptParams:
     """
     {
@@ -288,6 +293,19 @@ class BgmUploadResponse(BaseResponse):
                 "message": "success",
                 "data": {
                     "file": "/MoneyPrinterTurbo/resource/songs/example.mp3"
+                }
+            },
+        }
+
+
+class SplitPptResponse(BaseResponse):
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "status": 200,
+                "message": "success",
+                "data": {
+                    "task_id": "6c85c8cc-a77a-42b9-bc30-947815aa0558"
                 }
             },
         }

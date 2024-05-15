@@ -11,6 +11,8 @@ from app.models.schema import VideoParams, VideoConcatMode
 from app.services import llm, material, voice, video, subtitle
 from app.services import state as sm
 from app.utils import utils
+from urllib.parse import parse_qs
+from app.models.models import CmContent, CmContentPart, DcmTaskMessage
 
 
 def start(task_id, params: VideoParams):
@@ -191,6 +193,21 @@ def start(task_id, params: VideoParams):
     }
     sm.state.update_task(task_id, state=const.TASK_STATE_COMPLETE, progress=100, **kwargs)
     return kwargs
+
+
+def submit_task(task_id, params):
+    data = parse_qs(params)
+    data = {i: data[i][0] for i in data}
+
+    task_type = data['task_type']
+    input_config = data.pop('task_type')
+
+    if task_type == 'split_ppt':
+        content_id = input_config['content_id']
+    elif task_type == '':
+        pass
+    elif task_type == '':
+        pass
 
 # def start_test(task_id, params: VideoParams):
 #     print(f"start task {task_id} \n")
