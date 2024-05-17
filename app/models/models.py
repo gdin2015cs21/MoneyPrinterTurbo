@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
-from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from databases import Database
+from sqlalchemy import Column, Integer, String, Float
 
-# 配置 PostgreSQL 数据库连接
-DATABASE_URL = "postgresql://username:password@host:port/dbname"
-database = Database(DATABASE_URL)
-engine = create_engine(DATABASE_URL)
+SQLALCHEMY_DATABASE_URL = "postgresql://user:password@localhost/dbname"
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 Base = declarative_base()
 
 
