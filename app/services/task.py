@@ -204,9 +204,13 @@ def submit_task(task_id, params):
 
     if task_type == 'split_ppt':
         content_id = input_config['content_id']
-    elif task_type == '':
-        pass
-    elif task_type == '':
+    elif task_type == 'add_content_text':
+        content_id = input_config['content_id']
+        content_part_id = input_config['content_part_id']
+    elif task_type == 'translate':
+        content_id = input_config['content_id']
+        to_language = input_config['to_language']
+    else:
         pass
 
 # def start_test(task_id, params: VideoParams):
